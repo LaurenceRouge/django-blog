@@ -1,0 +1,28 @@
+<a href="/blog/login">Connexion</a>
+{% if user.is_authenticated %}
+    <p>Bonjour {{user.username}}</p>
+    <a href="/blog/write">Poster un article</a>
+    <a href="/blog/logout">Déconnexion</a>
+{% endif %}
+<h1>Les derniers articles</h1>
+{% if latest_article_list %}
+    <ul>
+    {% for article in latest_article_list %}
+        <li>[{{ article.category.category_text }}] - <a href="/blog/{{ article.id }}/">{{ article.article_title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+
+<h1>Les catégories</h1>
+{% if categories %}
+    <ul>
+    {% for category in categories %}
+        <li><a href="/blog/tag/{{ category.id }}/">{{ category.category_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No category are available.</p>
+{% endif %}
