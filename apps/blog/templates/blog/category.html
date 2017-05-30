@@ -2,7 +2,7 @@
 <h1>{{ category.category_text }}</h1>
 {% if category %}
     <ul>
-        {% for article in articles %}
+        {% for article in category.articles.all %}
             {% if article.category.category_text == category.category_text %}
                 <li><a href="/blog/{{ article.id }}/">{{ article.article_title }}</a></li>
             {% endif %}

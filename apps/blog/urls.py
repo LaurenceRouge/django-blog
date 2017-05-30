@@ -6,11 +6,11 @@ from . import views
 
 urlpatterns = [
     # ex: /polls/
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
     # ex: /polls/5/
-    url(r'^(?P<article_id>[0-9]+)/$', views.detail, name='detail'),
+    url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
     # ex: blog/tag/5/
-    url(r'^tag/(?P<category_id>[0-9]+)/$', views.category, name='category'),
+    url(r'^tag/(?P<pk>[0-9]+)/$', views.CategoryView.as_view(), name='category'),
 
     url(r'^write/$', views.write, name='write'),
     #url de login blog/login

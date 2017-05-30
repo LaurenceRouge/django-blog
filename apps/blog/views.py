@@ -2,25 +2,32 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.views import generic
+from django.views.generic.edit import CreateView
 
 from .models import Category, Article
 from .form import ArticleForm
 from django.utils import timezone
 
-def index(request):
-    latest_article_list = Article.objects.order_by('-pub_date')[:5]
-    categories = Category.objects.all()
-    context = {'latest_article_list': latest_article_list, 'categories': categories}
-    return render(request, 'blog/index.html', context)
+class IndexView(generic.ListView):
+    template_name = 'blog/index.html'
+    def get_context_data(self, *args, **kwargs):
+        context = super(IndexView, self).get_context_data(*args, **kwargs)
+        context['latest_article_list'] = Article.objects.order_by('-pub_date')[:5]
+        context['categories'] = Category.objects.all()
+        return context
+    def get_queryset(self):
+        return Article.objects.order_by('-pub_date')[:5]
 
-def detail(request, article_id):
-    article = get_object_or_404(Article, pk=article_id)
-    return render(request, 'blog/detail.html', {'article': article})
+class DetailView(generic.DetailView):
+    model = Article
+    template_name = 'blog/detail.html'
 
-def category(request, category_id):
-    category = get_object_or_404(Category, pk=category_id)
-    articles = Article.objects.all()
-    return render(request, 'blog/category.html', {'category': category, 'articles': articles})
+
+class CategoryView(generic.DetailView):
+    model = Category
+    template_name = 'blog/category.html'
 
 def write(request):
     if request.user.is_authenticated():
