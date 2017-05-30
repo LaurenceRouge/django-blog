@@ -9,9 +9,12 @@ class Category(models.Model):
 
 class Article(models.Model):
     article_title = models.CharField(max_length=200, default="Titre")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='articles'
+        )
     article_text = models.CharField(max_length=200)
-    #votes = models.IntegerField(default=0)
     pub_date = models.DateTimeField('date published')
     def __str__(self):
-        return self.article_text
+        return self.article_title
