@@ -12,7 +12,7 @@ urlpatterns = [
     # ex: blog/tag/5/
     url(r'^tag/(?P<pk>[0-9]+)/$', views.CategoryView.as_view(), name='category'),
 
-    url(r'^write/$', views.write, name='write'),
+    url(r'^write/$', views.FormCreate.as_view(), name='write'),
     #url de login blog/login
     url(r'^login/$', auth_views.login, name='login'),
 

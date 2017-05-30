@@ -29,17 +29,21 @@ class CategoryView(generic.DetailView):
     model = Category
     template_name = 'blog/category.html'
 
-def write(request):
-    if request.user.is_authenticated():
-        if request.method == "POST":
-            form = ArticleForm(request.POST)
-            if form.is_valid():
-                article = form.save(commit=False)
-                article.pub_date = timezone.now()
-                article.save()
-                return render(request, 'blog/detail.html', {'article': article})
-        else:
-            form = ArticleForm()
-        return render(request, 'blog/write.html', {'form': form,'form_class': form})
-    else:
-        return HttpResponse("Gros problemo")
+class FormCreate(CreateView):
+    form_class = ArticleForm
+    template_name = 'blog/write.html'
+
+# def write(request):
+#     if request.user.is_authenticated():
+#         if request.method == "POST":
+#             form = ArticleForm(request.POST)
+#             if form.is_valid():
+#                 article = form.save(commit=False)
+#                 article.pub_date = timezone.now()
+#                 article.save()
+#                 return render(request, 'blog/detail.html', {'article': article})
+#         else:
+#             form = ArticleForm()
+#         return render(request, 'blog/write.html', {'form': form,'form_class': form})
+#     else:
+#         return HttpResponse("Gros problemo")
