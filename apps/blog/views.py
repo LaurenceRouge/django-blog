@@ -7,7 +7,6 @@ from .models import Category, Article
 from .form import ArticleForm
 from django.utils import timezone
 
-
 def index(request):
     latest_article_list = Article.objects.order_by('-pub_date')[:5]
     categories = Category.objects.all()
@@ -25,12 +24,13 @@ def category(request, category_id):
 
 def write(request):
     if request.user.is_authenticated():
-        form = ArticleForm(request.POST)
-        if form.is_valid():
-            article = form.save(commit=False)
-            article.pub_date = timezone.now()
-            article.save()
-            return render(request, 'blog/detail.html', {'article': article})
+        if request.method == "POST":
+            form = ArticleForm(request.POST)
+            if form.is_valid():
+                article = form.save(commit=False)
+                article.pub_date = timezone.now()
+                article.save()
+                return render(request, 'blog/detail.html', {'article': article})
         else:
             form = ArticleForm()
         return render(request, 'blog/write.html', {'form': form,'form_class': form})
